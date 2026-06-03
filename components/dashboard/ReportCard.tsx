@@ -64,7 +64,7 @@ export default function ReportCard({ report, onViewDetails, onSendReminder, isCo
           </ul>
         </div>
 
-        <div>
+        {/* <div>
           <h4 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
             <span>🏆</span> Key Accomplishments
           </h4>
@@ -76,7 +76,7 @@ export default function ReportCard({ report, onViewDetails, onSendReminder, isCo
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
 
         {report.challenges && report.challenges.length > 0 && (
           <div>

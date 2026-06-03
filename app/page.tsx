@@ -58,12 +58,6 @@ export default function HomePage() {
               >
                 Get Started
               </Link>
-              <Link
-                href="#features"
-                className="px-6 py-3 text-gray-700 bg-white rounded-lg font-medium border border-gray-300 hover:border-gray-400 transition-all"
-              >
-                Learn More
-              </Link>
             </div>
           </div>
 

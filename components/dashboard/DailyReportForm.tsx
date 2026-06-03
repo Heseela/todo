@@ -82,7 +82,7 @@ export default function DailyReportForm({ onSubmit }: { onSubmit: (data: any) =>
           />
         </div>
 
-        <div>
+        {/* <div>
           <label className="block text-gray-700 font-medium mb-2">Key Accomplishments</label>
           {accomplishments.map((item, idx) => (
             <div key={idx} className="flex gap-2 mb-2">
@@ -112,7 +112,7 @@ export default function DailyReportForm({ onSubmit }: { onSubmit: (data: any) =>
           >
             + Add another accomplishment
           </button>
-        </div>
+        </div> */}
 
         <div>
           <label className="block text-gray-700 font-medium mb-2">Challenges Faced</label>

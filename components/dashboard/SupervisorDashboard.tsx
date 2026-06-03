@@ -70,14 +70,14 @@ export default function SupervisorDashboard({ reports, onSendEmail }: Supervisor
                 <p className="text-gray-600">{report.hoursWorked} hours</p>
               </div>
 
-              <div>
+              {/* <div>
                 <h4 className="font-semibold text-gray-800 mb-2">Key Accomplishments</h4>
                 <ul className="list-disc list-inside space-y-1">
                   {report.accomplishments.map((item, idx) => (
                     <li key={idx} className="text-gray-600">{item}</li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
 
               {report.challenges.length > 0 && (
                 <div>
