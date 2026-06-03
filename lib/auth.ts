@@ -10,9 +10,8 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        // Demo users - in production, check against database
         const users = [
-          { id: '1', email: 'cto@company.com', password: 'demo123', name: 'CTO User', role: 'cto' },
+          { id: '1', email: 'ruby@company.com', password: 'demo123', name: 'Ruby Baur', role: 'supervisor' },
           { id: '2', email: 'john@company.com', password: 'demo123', name: 'John Doe', role: 'employee' },
           { id: '3', email: 'jane@company.com', password: 'demo123', name: 'Jane Smith', role: 'employee' },
         ];

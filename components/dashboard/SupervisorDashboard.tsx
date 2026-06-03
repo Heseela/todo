@@ -4,12 +4,12 @@ import { useState } from 'react';
 import Card from '../ui/Card';
 import { DailyReport } from '@/types';
 
-interface CTODashboardProps {
+interface SupervisorDashboardProps {
   reports: DailyReport[];
   onSendEmail: (reportId: string) => void;
 }
 
-export default function CTODashboard({ reports, onSendEmail }: CTODashboardProps) {
+export default function SupervisorDashboard({ reports, onSendEmail }: SupervisorDashboardProps) {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedEmployee, setSelectedEmployee] = useState('all');
 

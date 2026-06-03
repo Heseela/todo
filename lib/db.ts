@@ -3,7 +3,7 @@ export interface User {
     id: string;
     email: string;
     name: string;
-    role: 'cto' | 'employee';
+    role: 'supervisor' | 'employee';
     department?: string;
     createdAt: Date;
   }
@@ -29,9 +29,9 @@ export interface User {
     private users: User[] = [
       {
         id: '1',
-        email: 'cto@company.com',
+        email: 'ruby@company.com',
         name: 'Michael Chen',
-        role: 'cto',
+        role: 'supervisor',
         createdAt: new Date(),
       },
       {

@@ -11,10 +11,12 @@ export default function DashboardIndex() {
   useEffect(() => {
     if (status === 'authenticated') {
       // Redirect based on user role
-      if (session?.user?.role === 'cto') {
-        router.push('/dashboard/cto');
-      } else {
+      if (session?.user?.role === 'supervisor') {
+        router.push('/dashboard/supervisor');
+      } else if (session?.user?.role === 'employee') {
         router.push('/dashboard/employee');
+      } else {
+        router.push('/login'); // Default redirect if role is not recognized'); 
       }
     } else if (status === 'unauthenticated') {
       router.push('/login');

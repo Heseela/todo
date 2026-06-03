@@ -4,6 +4,12 @@ import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import {
+  ClipboardList,
+  Users,
+  Mail,
+  BarChart3,
+} from 'lucide-react';
 
 export default function HomePage() {
   const { data: session, status } = useSession();
@@ -30,7 +36,7 @@ export default function HomePage() {
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="text-center">
-            <div className="inline-flex items-center justify-center p-2 rounded-full mb-6" style={{ backgroundColor: '#0088D0', opacity: 0.1 }}>
+            <div className="inline-flex items-center justify-center p-2 rounded-full mb-6" style={{ backgroundColor: '#0088D0'}}>
               <div className="w-16 h-16 flex items-center justify-center rounded-full" style={{ backgroundColor: '#0088D0' }}>
                 <span className="text-white text-2xl font-bold">WR</span>
               </div>
@@ -67,24 +73,24 @@ export default function HomePage() {
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: '#0088D0', opacity: 0.1 }}>
-                  <span className="text-2xl">📝</span>
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: '#0088D0' }}>
+                <ClipboardList className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Easy Reporting</h3>
                 <p className="text-gray-600">Submit daily work reports with our simple, intuitive form interface.</p>
               </div>
               
               <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: '#0088D0', opacity: 0.1 }}>
-                  <span className="text-2xl">👥</span>
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: '#0088D0' }}>
+                <Users className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Role-Based Access</h3>
-                <p className="text-gray-600">Employees submit reports, CTOs get comprehensive overviews.</p>
+                <p className="text-gray-600">Employees submit reports, supervisor get comprehensive overviews.</p>
               </div>
               
               <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: '#0088D0', opacity: 0.1 }}>
-                  <span className="text-2xl">📧</span>
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: '#0088D0' }}>
+                <Mail className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Email Reminders</h3>
                 <p className="text-gray-600">Automated email notifications and reminders for pending reports.</p>

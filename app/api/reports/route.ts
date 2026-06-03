@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 
   let filteredReports = [...reports];
 
-  if (userId && session.user.role === 'cto') {
+  if (userId && session.user.role === 'supervisor') {
     filteredReports = filteredReports.filter(r => r.userId === userId);
   } else if (session.user.role === 'employee') {
     filteredReports = filteredReports.filter(r => r.userId === session.user.id);

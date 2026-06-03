@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import CTODashboard from '@/components/dashboard/CTODashboard';
+import SupervisorDashboard from '@/components/dashboard/SupervisorDashboard';
 import Card from '@/components/ui/Card';
 import { DailyReport } from '@/types';
 
@@ -35,7 +35,7 @@ const mockReports: DailyReport[] = [
   },
 ];
 
-export default function CTODashboardPage() {
+export default function SupervisorDashboardPage() {
   const [reports] = useState<DailyReport[]>(mockReports);
   const [emailSent, setEmailSent] = useState<string | null>(null);
 
@@ -77,7 +77,7 @@ export default function CTODashboardPage() {
         </div>
       )}
 
-      <CTODashboard reports={reports} onSendEmail={handleSendEmail} />
+      <SupervisorDashboard reports={reports} onSendEmail={handleSendEmail} />
     </div>
   );
 }
