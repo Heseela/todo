@@ -1,55 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-
-// Mock database
-let reports: any[] = [];
+import { db } from '@/lib/db';
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
-  
+
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
-  const date = searchParams.get('date');
+  const date   = searchParams.get('date');
 
-  let filteredReports = [...reports];
+  // Supervisors may filter by any userId; employees only see their own reports
+  const filters: { userId?: string; date?: string } = {};
 
-  if (userId && session.user.role === 'supervisor') {
-    filteredReports = filteredReports.filter(r => r.userId === userId);
-  } else if (session.user.role === 'employee') {
-    filteredReports = filteredReports.filter(r => r.userId === session.user.id);
+  if (session.user.role === 'supervisor') {
+    if (userId) filters.userId = userId;
+  } else {
+    filters.userId = session.user.id;
   }
 
-  if (date) {
-    filteredReports = filteredReports.filter(r => r.date === date);
-  }
+  if (date) filters.date = date;
 
-  return NextResponse.json(filteredReports);
+  const reports = await db.getReports(filters);
+  return NextResponse.json(reports);
 }
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
-  
+
   if (!session || session.user.role !== 'employee') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const body = await request.json();
-  const newReport = {
-    id: Date.now().toString(),
-    userId: session.user.id,
-    userName: session.user.name,
-    date: new Date().toISOString().split('T')[0],
-    submittedAt: new Date().toISOString(),
-    status: 'submitted',
-    ...body,
-  };
 
-  reports.unshift(newReport);
-  
+  const newReport = await db.createReport({
+    userId:          session.user.id,
+    userName:        session.user.name ?? '',
+    date:            new Date().toISOString().split('T')[0],
+    submittedAt:     new Date().toISOString(),
+    status:          'submitted',
+    tasks:           body.tasks           ?? [],
+    hoursWorked:     body.hoursWorked     ?? 0,
+    accomplishments: body.accomplishments ?? [],
+    challenges:      body.challenges      ?? '',
+    tomorrowPlan:    body.tomorrowPlan    ?? [],
+  });
+
   return NextResponse.json(newReport, { status: 201 });
 }

@@ -1,17 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Show success message if user just registered
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (searchParams.get('registered') === 'true') {
+      setSuccess('Account created successfully! Please log in.');
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,6 +60,12 @@ export default function LoginPage() {
           <h1 className="text-3xl font-bold" style={{ color: '#981E52' }}>Work Report Hub</h1>
           <p className="text-gray-600 mt-2">Sign in to your account</p>
         </div>
+
+        {success && (
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 text-sm rounded-md">
+            {success}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -90,9 +107,18 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-600">
-          <p>Demo Credentials:</p>
+          <p>Don't have an account?{' '}
+            <Link href="/signup" className="font-medium" style={{ color: '#0088D0' }}>
+              Sign up here
+            </Link>
+          </p>
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-gray-200 text-center text-sm text-gray-600">
+          <p className="font-semibold mb-2">Demo Credentials:</p>
           <p className="text-xs mt-1">Supervisor: ruby@company.com / demo123</p>
-          <p className="text-xs">Employee: john@company.com / demo123</p>
+          <p className="text-xs">Employee: john.doe@company.com / demo123</p>
+          <p className="text-xs">Employee: jane.smith@company.com / demo123</p>
         </div>
       </div>
     </div>

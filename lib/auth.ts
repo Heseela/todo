@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { db } from './db';
 
 export const authOptions = {
   providers: [
@@ -10,15 +11,14 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const users = [
-          { id: '1', email: 'ruby@company.com', password: 'demo123', name: 'Ruby Baur', role: 'supervisor' },
-          { id: '2', email: 'john@company.com', password: 'demo123', name: 'John Doe', role: 'employee' },
-          { id: '3', email: 'jane@company.com', password: 'demo123', name: 'Jane Smith', role: 'employee' },
-        ];
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
 
-        const user = users.find(u => u.email === credentials?.email);
+        // Verify user exists and password is correct
+        const user = await db.verifyPassword(credentials.email, credentials.password);
         
-        if (user && credentials?.password === user.password) {
+        if (user) {
           return {
             id: user.id,
             email: user.email,

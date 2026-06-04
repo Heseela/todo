@@ -1,28 +1,60 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import DailyReportForm from '@/components/dashboard/DailyReportForm';
 import Card from '@/components/ui/Card';
 import { DailyReport } from '@/types';
 
 export default function EmployeeDashboard() {
+  const { data: session } = useSession();
   const [submittedReports, setSubmittedReports] = useState<DailyReport[]>([]);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const handleSubmitReport = async (reportData: any) => {
-    const newReport: DailyReport = {
-      id: Date.now().toString(),
-      userId: 'emp-1',
-      userName: 'John Doe',
-      date: new Date().toISOString().split('T')[0],
-      ...reportData,
-      status: 'submitted',
-      submittedAt: new Date().toISOString(),
+  // Fetch reports on component mount
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const response = await fetch('/api/reports');
+        if (!response.ok) throw new Error('Failed to fetch reports');
+        const data = await response.json();
+        setSubmittedReports(data);
+      } catch (err) {
+        setError('Failed to load reports');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    setSubmittedReports([newReport, ...submittedReports]);
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
+    if (session?.user) {
+      fetchReports();
+    }
+  }, [session]);
+
+  const handleSubmitReport = async (reportData: any) => {
+    try {
+      setError('');
+      const response = await fetch('/api/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(reportData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit report');
+      }
+
+      const newReport = await response.json();
+      setSubmittedReports([newReport, ...submittedReports]);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to submit report');
+    }
   };
 
   return (
@@ -33,12 +65,20 @@ export default function EmployeeDashboard() {
         </div>
       )}
 
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
+          ✗ {error}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <DailyReportForm onSubmit={handleSubmitReport} />
         
         <div className="space-y-6">
           <Card title="Your Recent Reports">
-            {submittedReports.length === 0 ? (
+            {isLoading ? (
+              <p className="text-gray-500 text-center py-8">Loading...</p>
+            ) : submittedReports.length === 0 ? (
               <p className="text-gray-500 text-center py-8">No reports submitted yet</p>
             ) : (
               <div className="space-y-4 max-h-125 overflow-y-auto">
